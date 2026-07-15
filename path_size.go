@@ -1,14 +1,11 @@
 package code
 
 import (
-	"context"
 	"fmt"
 	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
-
-	"github.com/urfave/cli/v3"
 )
 
 func GetPathSize(path string, isHuman bool, isAll bool, isRecursive bool) (string, error) {
@@ -88,50 +85,4 @@ func humanize(size int64) string {
 		i++
 	}
 	return strconv.FormatFloat(sizeInFloat, 'f', 1, 64) + units[i]
-}
-
-func main() {
-	cmd := &cli.Command{
-		Usage:     "print size of a file or directory; supports -r (recursive), -H (human-readable), -a (include hidden)",
-		Name:      "hexlet-path-size",
-		UsageText: "hexlet-path-size [global options] <path>",
-		Flags: []cli.Flag{
-			&cli.BoolFlag{
-				Name:    "human",
-				Aliases: []string{"H"},
-				Usage:   "human-readable sizes (auto-select unit) (default: false)",
-			},
-			&cli.BoolFlag{
-				Name:    "all",
-				Aliases: []string{"a"},
-				Usage:   "include hidden files and directories (default: false)",
-			},
-			&cli.BoolFlag{
-				Name:    "recursive",
-				Aliases: []string{"r"},
-				Usage:   "recursive size of directories (default: false)",
-			},
-		},
-		Action: func(ctx context.Context, cmd *cli.Command) error {
-			if cmd.NArg() < 1 {
-				return fmt.Errorf("missing <path> argument")
-			}
-			path := cmd.Args().Get(0)
-			isHuman := cmd.Bool("human")
-			isAll := cmd.Bool("all")
-			isRecursive := cmd.Bool("recursive")
-			file, err := GetPathSize(path, isHuman, isAll, isRecursive)
-			if err != nil {
-				fmt.Println(err)
-			} else {
-				fmt.Println(file)
-			}
-			return nil
-		},
-	}
-
-	if err := cmd.Run(context.Background(), os.Args); err != nil {
-		fmt.Println(err)
-	}
-
 }
