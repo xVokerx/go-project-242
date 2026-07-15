@@ -77,10 +77,10 @@ func recursiveDirSize(path string, isAll bool) (int64, error) {
 }
 
 func humanize(size int64) string {
-	units := []string{"B", "KB", "MB", "GB", "TB"}
+	units := []string{"KB", "MB", "GB", "TB"}
 	i := 0
 	sizeInFloat := float64(size)
-	for sizeInFloat >= 1024 && i < len(units)-1 {
+	for sizeInFloat > 1024 && i < len(units)-1 {
 		sizeInFloat /= 1024
 		i++
 	}
