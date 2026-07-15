@@ -45,7 +45,7 @@ func GetPathSize(path string, isHuman bool, isAll bool, isRecursive bool) (strin
 	if isHuman {
 		return fmt.Sprintf("%s\t%s", humanize(size), path), nil
 	}
-	return fmt.Sprintf("%dB\t%s", size, path), nil
+	return fmt.Sprintf("%dB", size), nil
 }
 
 func recursiveDirSize(path string, isAll bool) (int64, error) {
@@ -83,9 +83,6 @@ func humanize(size int64) string {
 	for sizeInFloat >= 1024 && i < len(units)-1 {
 		sizeInFloat /= 1024
 		i++
-	}
-	if i == 0 {
-		return strconv.FormatInt(size, 10)
 	}
 	return strconv.FormatFloat(sizeInFloat, 'f', 1, 64) + units[i]
 }
