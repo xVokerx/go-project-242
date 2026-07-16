@@ -33,6 +33,7 @@ func GetPathSize(path string, isHuman bool, isAll bool, isRecursive bool) (strin
 					}
 					size += dirSize
 				}
+				continue
 			}
 			fileinfo, err := file.Info()
 			if err != nil {
@@ -43,6 +44,9 @@ func GetPathSize(path string, isHuman bool, isAll bool, isRecursive bool) (strin
 	}
 	if isHuman {
 		return fmt.Sprintf("%s\t%s", humanize(size), path), nil
+	}
+	if size >= 1024 {
+		size /= 1024
 	}
 	return fmt.Sprintf("%dB\t%s", size, path), nil
 }
