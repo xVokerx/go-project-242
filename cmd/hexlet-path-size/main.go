@@ -39,11 +39,11 @@ func main() {
 			isHuman := cmd.Bool("human")
 			isAll := cmd.Bool("all")
 			isRecursive := cmd.Bool("recursive")
-			file, err := code.GetPathSize(path, isHuman, isAll, isRecursive)
+			size, err := code.GetPathSize(path, isHuman, isAll, isRecursive)
 			if err != nil {
 				fmt.Println(err)
 			} else {
-				fmt.Println(file)
+				fmt.Printf("%s\t%s", size, path)
 			}
 			return nil
 		},
