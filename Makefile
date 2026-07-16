@@ -6,3 +6,6 @@ lint:
 
 lint-fix:
 	golangci-lint run --fix
+
+tests:
+	go test -v -timeout 30s

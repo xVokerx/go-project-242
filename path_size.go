@@ -27,7 +27,7 @@ func GetPathSize(path string, isRecursive bool, isHuman bool, isAll bool) (strin
 			}
 			if file.IsDir() {
 				if isRecursive {
-					dirSize, err := recursiveDirSize(filepath.Join(path, file.Name()), isAll)
+					dirSize, err := RecursiveDirSize(filepath.Join(path, file.Name()), isAll)
 					if err != nil {
 						return "", err
 					}
@@ -43,12 +43,12 @@ func GetPathSize(path string, isRecursive bool, isHuman bool, isAll bool) (strin
 		}
 	}
 	if isHuman {
-		return humanize(size), nil
+		return Humanize(size), nil
 	}
 	return strconv.FormatInt(size, 10) + "B", nil
 }
 
-func recursiveDirSize(path string, isAll bool) (int64, error) {
+func RecursiveDirSize(path string, isAll bool) (int64, error) {
 	var size int64
 	dirEntry, err := os.ReadDir(path)
 	if err != nil {
@@ -60,7 +60,7 @@ func recursiveDirSize(path string, isAll bool) (int64, error) {
 		}
 		if file.IsDir() {
 			fullPath := filepath.Join(path, file.Name())
-			nestedSize, err := recursiveDirSize(fullPath, isAll)
+			nestedSize, err := RecursiveDirSize(fullPath, isAll)
 			if err != nil {
 				return 0, fmt.Errorf("read directory %s: %w", fullPath, err)
 			}
@@ -76,7 +76,7 @@ func recursiveDirSize(path string, isAll bool) (int64, error) {
 	return size, nil
 }
 
-func humanize(size int64) string {
+func Humanize(size int64) string {
 	units := []string{"B", "KB", "MB", "GB", "TB", "PB", "EB"}
 	i := 0
 	sizeInFloat := float64(size)
