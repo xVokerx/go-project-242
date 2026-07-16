@@ -84,5 +84,8 @@ func humanize(size int64) string {
 		sizeInFloat /= 1024
 		i++
 	}
+	if i == 0 {
+		return strconv.FormatInt(size, 10) + units[i]
+	}
 	return strconv.FormatFloat(sizeInFloat, 'f', 1, 64) + units[i]
 }
