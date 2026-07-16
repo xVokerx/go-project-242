@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func GetPathSize(path string, isHuman bool, isAll bool, isRecursive bool) (string, error) {
+func GetPathSize(path string, isRecursive bool, isHuman bool, isAll bool) (string, error) {
 	fmt.Println(
 		"PATH:", path,
 		"human:", isHuman,
