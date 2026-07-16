@@ -9,6 +9,12 @@ import (
 )
 
 func GetPathSize(path string, isHuman bool, isAll bool, isRecursive bool) (string, error) {
+	fmt.Println(
+		"PATH:", path,
+		"human:", isHuman,
+		"all:", isAll,
+		"recursive:", isRecursive,
+	)
 	var size int64
 	file, err := os.Lstat(path)
 	if err != nil {
