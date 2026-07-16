@@ -43,7 +43,7 @@ func main() {
 			if err != nil {
 				fmt.Println(err)
 			} else {
-				fmt.Printf("%s\t%s", size, path)
+				fmt.Printf("%s\t%s\n", size, path)
 			}
 			return nil
 		},
