@@ -42,11 +42,10 @@ func GetPathSize(path string, isHuman bool, isAll bool, isRecursive bool) (strin
 			size += fileinfo.Size()
 		}
 	}
+	fmt.Println("size =", size)
+	fmt.Println("human =", isHuman)
 	if isHuman {
 		return humanize(size), nil
-	}
-	if size >= 1024 {
-		size /= 1024
 	}
 	return strconv.FormatInt(size, 10) + "B", nil
 }
