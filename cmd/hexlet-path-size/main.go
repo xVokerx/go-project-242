@@ -33,7 +33,7 @@ func main() {
 		},
 		Action: func(ctx context.Context, cmd *cli.Command) error {
 			if cmd.NArg() < 1 {
-				return fmt.Errorf("missing <path> argument")
+				return cli.ShowAppHelp(cmd)
 			}
 			path := cmd.Args().Get(0)
 			isHuman := cmd.Bool("human")

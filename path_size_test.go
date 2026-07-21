@@ -1,7 +1,6 @@
-package code_test
+package code
 
 import (
-	"code"
 	"os"
 	"path/filepath"
 	"testing"
@@ -19,7 +18,7 @@ func TestGetPathSize_Bytes(t *testing.T) {
 	err := os.WriteFile(filePath, data, 0644)
 	require.NoError(t, err)
 
-	size, err := code.GetPathSize(filePath, false, false, false)
+	size, err := GetPathSize(filePath, false, false, false)
 	require.NoError(t, err)
 
 	require.Equal(t, "2048B", size)
@@ -46,14 +45,14 @@ func TestGetPathSize_Bytes_AllFlags(t *testing.T) {
 	)
 	require.NoError(t, err)
 
-	size, err := code.GetPathSize(testDir, true, true, true)
+	size, err := GetPathSize(testDir, true, true, true)
 	require.NoError(t, err)
 
 	require.Equal(t, "4.0KB", size)
 }
 
 func TestGetPathSize_NoExistFile(t *testing.T) {
-	_, err := code.GetPathSize(
+	_, err := GetPathSize(
 		"./test.txt",
 		false,
 		false,
@@ -64,7 +63,7 @@ func TestGetPathSize_NoExistFile(t *testing.T) {
 }
 
 func TestGetPathSize_NoPath(t *testing.T) {
-	_, err := code.GetPathSize(
+	_, err := GetPathSize(
 		"",
 		false,
 		false,
@@ -95,7 +94,7 @@ func TestGetPathSize_Bytes_Recursive(t *testing.T) {
 	)
 	require.NoError(t, err)
 
-	size, err := code.GetPathSize(testDir, true, false, false)
+	size, err := GetPathSize(testDir, true, false, false)
 	require.NoError(t, err)
 
 	require.Equal(t, "4096B", size)
@@ -119,7 +118,7 @@ func TestGetPathSize_Bytes_All(t *testing.T) {
 	)
 	require.NoError(t, err)
 
-	size, err := code.GetPathSize(testDir, false, false, true)
+	size, err := GetPathSize(testDir, false, false, true)
 	require.NoError(t, err)
 
 	require.Equal(t, "4096B", size)
@@ -147,7 +146,7 @@ func TestRecursiveDirSize(t *testing.T) {
 	)
 	require.NoError(t, err)
 
-	size, err := code.RecursiveDirSize(testDir, true)
+	size, err := recursiveDirSize(testDir, true)
 	require.NoError(t, err)
 
 	require.Equal(t, int64(300), size)
@@ -170,7 +169,7 @@ func TestGetPathSize_Bytes_IgnoreHidden(t *testing.T) {
 	)
 	require.NoError(t, err)
 
-	size, err := code.GetPathSize(testDir, false, false, false)
+	size, err := GetPathSize(testDir, false, false, false)
 	require.NoError(t, err)
 
 	require.Equal(t, "2048B", size)
@@ -221,7 +220,7 @@ func TestHumanize(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			require.Equal(t, tt.want, code.Humanize(tt.size))
+			require.Equal(t, tt.want, humanize(tt.size))
 		})
 	}
 }

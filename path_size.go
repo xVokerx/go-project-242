@@ -12,24 +12,26 @@ func GetPathSize(path string, isRecursive bool, isHuman bool, isAll bool) (strin
 	var size int64
 	file, err := os.Lstat(path)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("read directory %s: %w", path, err)
 	}
 	if !file.IsDir() {
 		size = file.Size()
 	} else {
 		dirEntry, err := os.ReadDir(path)
 		if err != nil {
-			return "", err
+			return "", fmt.Errorf("read directory %s: %w", path, err)
 		}
 		for _, file := range dirEntry {
 			if !isAll && strings.HasPrefix(file.Name(), ".") {
 				continue
 			}
+			fullPath := filepath.Join(path, file.Name())
 			if file.IsDir() {
 				if isRecursive {
-					dirSize, err := RecursiveDirSize(filepath.Join(path, file.Name()), isAll)
+					dirSize, err := recursiveDirSize(fullPath, isAll)
 					if err != nil {
-						return "", err
+						fmt.Fprintf(os.Stderr, "warning: %v\n", fmt.Errorf("read dir %s: %w", fullPath, err))
+						continue
 					}
 					size += dirSize
 				}
@@ -37,18 +39,18 @@ func GetPathSize(path string, isRecursive bool, isHuman bool, isAll bool) (strin
 			}
 			fileinfo, err := file.Info()
 			if err != nil {
-				return "", err
+				fmt.Fprintf(os.Stderr, "warning: %v\n", fmt.Errorf("read dir %s: %w", fullPath, err))
 			}
 			size += fileinfo.Size()
 		}
 	}
 	if isHuman {
-		return Humanize(size), nil
+		return humanize(size), nil
 	}
 	return strconv.FormatInt(size, 10) + "B", nil
 }
 
-func RecursiveDirSize(path string, isAll bool) (int64, error) {
+func recursiveDirSize(path string, isAll bool) (int64, error) {
 	var size int64
 	dirEntry, err := os.ReadDir(path)
 	if err != nil {
@@ -60,7 +62,7 @@ func RecursiveDirSize(path string, isAll bool) (int64, error) {
 		}
 		if file.IsDir() {
 			fullPath := filepath.Join(path, file.Name())
-			nestedSize, err := RecursiveDirSize(fullPath, isAll)
+			nestedSize, err := recursiveDirSize(fullPath, isAll)
 			if err != nil {
 				return 0, fmt.Errorf("read directory %s: %w", fullPath, err)
 			}
@@ -76,7 +78,7 @@ func RecursiveDirSize(path string, isAll bool) (int64, error) {
 	return size, nil
 }
 
-func Humanize(size int64) string {
+func humanize(size int64) string {
 	units := []string{"B", "KB", "MB", "GB", "TB", "PB", "EB"}
 	i := 0
 	sizeInFloat := float64(size)
