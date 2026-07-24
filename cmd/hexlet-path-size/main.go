@@ -41,7 +41,7 @@ func main() {
 			isRecursive := cmd.Bool("recursive")
 			size, err := code.GetPathSize(path, isRecursive, isHuman, isAll)
 			if err != nil {
-				fmt.Println(err)
+				cli.Exit(err.Error(),1)
 			} else {
 				fmt.Printf("%s\t%s\n", size, path)
 			}
