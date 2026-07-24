@@ -39,7 +39,8 @@ func GetPathSize(path string, isRecursive bool, isHuman bool, isAll bool) (strin
 			}
 			fileinfo, err := file.Info()
 			if err != nil {
-				return "", fmt.Errorf("read directory %s: %w", path, err)
+				fmt.Fprintf(os.Stderr, "warning: %v\n", fmt.Errorf("read dir %s: %w", fullPath, err))
+				continue
 			}
 			size += fileinfo.Size()
 		}
